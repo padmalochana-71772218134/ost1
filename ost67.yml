@@ -1,0 +1,39 @@
+Exp. No : 04 Web Application With
+Date : / /2024 Maven
+AIM :
+To design a Maven-based web application that displays event details and allows user registration using
+HTML and Servlets.
+PROCEDURE :
+1. Create a Maven Web Application:
+• Generate the Maven web application structure:
+2. *Add HTML Pages*:
+• Create index.html for displaying event details and linking to the registration form.
+• Create Register.html to implement the registration form.
+3. *Develop a Servlet*:
+• Implement a servlet class (HelloServlet) to process requests and respond with dynamic content.
+4. *Build and Deploy*:
+• Build the project using Maven:
+$ mvn clean package
+• Deploy the .war file to a servlet container such as Apache Tomcat.
+5. Access the Web Application:
+• Open a web browser and navigate to:
+• Events Page: http://localhost:8080/my-webapp/index.html
+• Registration Form: http://localhost:8080/my-webapp/Register.html
+• Servlet Response: http://localhost:8080/my-webapp/hello
+mvn archetype:generate -DgroupId=com.example -DartifactId=my-webapp -
+DarchetypeArtifactId=maven- Darchetype-webapp -DinteractiveMode=false
+Directory Structure: |my-webapp/ ├── src │ ├── main │ │ ├── java │ │ │ └── com.example.HelloServlet │ │ ├── resources │ │ └── webapp │ │ ├── index.html │ │ ├── Register.html │ │ └── WEB-INF │ │ └── web.xml └── target/
+Program:
+1. Index.html: Event Details Page <!DOCTYPE html> <html> <head> <title>Events</title> <link rel="icon" href="images/img1.jpeg"> </head> <body bgcolor="black" style="color: white;"> <h1 align="center">Upcoming Events &#x1F4C6</h1> <h4 align="center">Don't miss any of your events. Here are the important events you have registered for!</h4> <hr> <p align="center"><img src="images/img2.jpeg" alt="Event Image"></p> <h1 align="center">Photo Gallery Event</h1> <h2 align="center">Free Entry | Free Food | Pets are Not Allowed</h2> <p align="center"><img src="images/img3.jpeg" alt="Gallery Image"></p> <p align="center"><a href="Register.html">Register Now!</a></p> <h1 align="center">Contact</h1> <h2 align="center">+91 65926526899 | eventcollab@gmail.com</h2> <h3 align="center">9th Street Avenue Park, Salem, 636304</h3> </body> </html> 3. Register.html: Registration Form <!DOCTYPE html> <html> <head> <title>Register Form</title> <style> label { color: rgb(16, 23, 16); font-family: Cambria, Georgia, serif; }
+</style> </head> <body background="images/earth.png"> <h1 align="center" style="color: blue;">Registration Form</h1> <center> <fieldset> <legend><h2 style="color: rgb(188, 79, 192)">Register</h2></legend> <form> <table> <tr> <td><label>NAME:</label></td> <td><input type="text" placeholder="Your name" style="background: lightblue;"></td> </tr> <tr> <td><label>PASSWORD:</label></td> <td><input type="password" style="background: lightblue;"></td> </tr> <tr> <td><label>DOB:</label></td> <td><input type="date" style="background: lightblue;"></td> </tr> <tr> <td><label>ADDRESS:</label></td> <td><textarea cols="40" rows="5" style="background: lightblue;"></textarea></td> </tr> <tr> <td><label>GENDER:</label></td> <td> <input type="radio" name="gender">Male <input type="radio" name="gender">Female </td> </tr> <tr> <td><label>COURSE:</label></td> <td> <select style="background: lightblue;"> <option value="1">DLD</option> <option value="2">DSA</option> <option value="3">FDS</option> </select> </td> </tr> <tr> <td><label>FILES:</label></td> <td><input type="file" style="background: lightblue;"></td> </tr> <tr> <td colspan="2"> <button style="background: lightblue;">SUBMIT</button> <button style="background: lightblue;">RESET</button> </td> </tr>
+</table> </form> </fieldset> </center> </body> </html> 4. HelloServlet.java: Servlet Class package com.example; import java.io.IOException; import javax.servlet.ServletException; import javax.servlet.annotation.WebServlet; import javax.servlet.http.HttpServlet; import javax.servlet.http.HttpServletRequest; import javax.servlet.http.HttpServletResponse; @WebServlet("/hello") public class HelloServlet extends HttpServlet { @Override protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException { resp.setContentType("text/html"); resp.getWriter().println("<h1>Welcome to the Event Web Application!</h1>"); } }
+5. web.xml: Servlet Mapping <web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd" version="3.1"> <servlet> <servlet-name>HelloServlet</servlet-name> <servlet-class>com.example.HelloServlet</servlet-class> </servlet> <servlet-mapping> <servlet-name>HelloServlet</servlet-name> <url-pattern>/hello</url-pattern> </servlet-mapping> </web-app>
+RESULT:
+Hence the Web application created using maven servelets has been implemented and the output has been verified successfully.
+Preparation
+Observation
+Output
+Viva
+Record
+Total
+OUTPUT:
