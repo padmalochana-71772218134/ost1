@@ -1,0 +1,66 @@
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-compiler-plugin</artifactId>
+            <version>3.8.1</version> <!-- Use a compatible version -->
+            <configuration>
+                <source>1.8</source>
+                <target>1.8</target>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+
+
+
+
+
+INTEGRATE GIT WITH DESKTOP AND MAVEN
+
+1.git --version
+2.git config --global user.name "Deepika"
+3.git config --global user.email "deepikaperumal0405@gmail.com"
+4.git init //Initialized empty Git repository in C:/Users/Deepika/New folder/.git/
+5.git config --global core.autocrlf true
+6.echo /target/ > .gitignore
+7.git add .
+8.git commit -m "Initial commit"
+9.git remote add origin https://github.com/Deepika/repo.git
+10.git push -u origin master
+11.git add .gitignore
+12.git commit -m "Add .gitignore"
+13.git status //On branch master nothing to commit, working tree clean
+
+
+
+
+MAKE CHANGES TO FILES IN DIFFERENT BRANCHES AND PERFORM PULL REQUESTS AND MERGING 
+
+1.cd desktop
+2.cd OSTlab
+3.git clone https://github.com/Deepika0422/OSTlab.git
+4.git init
+5.git checkout -b branch1
+6.git add text1.txt
+7.git commit -m "Change made successfully"
+8.git branch
+9.git remote add origin https://github.com/Deepika0422/OSTlab.git
+10.git push origin branch1
+11.git checkout -b main
+12.git add text2.txt
+13.git commit -m "new change"
+14.git push origin main
+  //Enumerating objects: 3, done.
+Counting objects: 100% (3/3), done.
+Delta compression using up to 12 threads
+Compressing objects: 100% (2/2), done.
+Writing objects: 100% (2/2), 240 bytes | 240.00 KiB/s, done.
+Total 2 (delta 0), reused 0 (delta 0), pack-reused 0
+remote:
+remote: Create a pull request for 'main' on GitHub by visiting:
+remote:      https://github.com/Deepika0422/OSTlab/pull/new/main
+remote:
+To https://github.com/Deepika0422/OSTlab.git
+ * [new branch]      main -> main
