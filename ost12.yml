@@ -1,0 +1,423 @@
+3. Multimodule data-engineering project for copying csv files
+
+1.creating parent module:
+  mvn archetype:generate -DgroupId=com.example.dataengineering -DartifactId=data-engineering-parent -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+  
+2.creating child modules within parent module:
+  
+     1.ingestion module:
+         mvn archetype:generate -DgroupId=com.example.dataengineering -DartifactId=data-ingestion -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+      
+     2.Transformation module:
+         mvn archetype:generate -DgroupId=com.example.dataengineering -DartifactId=data-transformation -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+     3.Data Storage module:
+         mvn archetype:generate -DgroupId=com.example.dataengineering -DartifactId=data-storage -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+     4.Analytics module:
+          mvn archetype:generate -DgroupId=com.example.dataengineering -DartifactId=data-analytics -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+3.Modification of pom.xml file in each module:
+
+    1.parent pom.xml:
+        
+        <project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.example.dataengineering</groupId>
+    <artifactId>data-engineering-parent</artifactId>
+    <version>1.0-SNAPSHOT</version>
+    <packaging>pom</packaging> <!-- Indicates that this is a parent POM -->
+
+    <modules>
+        <module>data-ingestion</module>
+        <module>data-transformation</module>
+        <module>data-storage</module>
+        <module>data-analytics</module>
+    </modules>
+
+    <dependencyManagement>
+        <dependencies>
+            <!-- Define common dependencies here that can be shared across modules -->
+            <dependency>
+                <groupId>org.apache.spark</groupId>
+                <artifactId>spark-core_2.12</artifactId>
+                <version>3.0.1</version>
+            </dependency>
+            <!-- Add other common dependencies -->
+        </dependencies>
+    </dependencyManagement>
+
+    <build>
+        <plugins>
+            <!-- Add any common plugins (e.g., for compiling, packaging, etc.) -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
+
+         2.Ingestion pom.xml:
+
+             <project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example.dataengineering</groupId>
+        <artifactId>data-engineering-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath> <!-- Points to parent POM -->
+    </parent>
+
+    <artifactId>data-ingestion</artifactId>
+    <dependencies>
+        <!-- Add specific ingestion-related dependencies -->
+        <dependency>
+            <groupId>org.apache.kafka</groupId>
+            <artifactId>kafka-clients</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+    </dependency>
+<dependency>
+        <groupId>com.example.dataengineering</groupId>
+        <artifactId>data-transformation</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>com.example.dataengineering</groupId>
+        <artifactId>data-storage</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+        <groupId>com.example.dataengineering</groupId>
+        <artifactId>data-analytics</artifactId>
+        <version>1.0-SNAPSHOT</version>
+    </dependency>
+
+        <!-- Add other ingestion-related dependencies -->
+    </dependencies>
+<build>
+    <plugins>
+        <plugin>
+            <groupId>org.codehaus.mojo</groupId>
+            <artifactId>exec-maven-plugin</artifactId>
+            <version>3.4.0</version>
+            <executions>
+                <execution>
+                    <goals>
+                        <goal>java</goal>
+                    </goals>
+                </execution>
+            </executions>
+            <configuration>
+                <mainClass>com.example.Main</mainClass>
+            </configuration>
+        </plugin>
+    </plugins>
+</build>
+
+</project>
+ 
+      3.transormation pom.xml:
+
+             <project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://www.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example.dataengineering</groupId>
+        <artifactId>data-engineering-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>data-transformation</artifactId>
+
+    <dependencies>
+        <!-- Add dependencies related to data transformation, e.g., Spark -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-core_2.12</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+    </dependency>
+    </dependencies>
+</project>
+
+       4.Storage pom.xml:
+           
+           <project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://www.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example.dataengineering</groupId>
+        <artifactId>data-engineering-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>data-storage</artifactId>
+
+    <dependencies>
+        <!-- Add dependencies related to storage, e.g., JDBC or S3 clients -->
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>8.0.22</version>
+        </dependency>
+<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+    </dependency>
+    </dependencies>
+</project>
+
+
+       5.Analytics pom.xml:
+
+               <project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://www.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <parent>
+        <groupId>com.example.dataengineering</groupId>
+        <artifactId>data-engineering-parent</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath>
+    </parent>
+
+    <artifactId>data-analytics</artifactId>
+
+    <dependencies>
+        <!-- Add dependencies related to data analytics, e.g., Pandas or SparkSQL -->
+        <dependency>
+            <groupId>org.apache.spark</groupId>
+            <artifactId>spark-sql_2.12</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+<dependency>
+        <groupId>junit</groupId>
+        <artifactId>junit</artifactId>
+        <version>4.13.2</version>
+        <scope>test</scope>
+    </dependency>
+
+    </dependencies>
+</project>
+
+4.building project after changing directory:
+
+     cd data-engineering-parent
+     mvn clean install
+
+
+5.Parent project structure:
+
+   data-engineering-parent/
+│
+├── pom.xml               # Parent project POM
+├── data-ingestion/        # Ingestion module
+│   ├── pom.xml
+├── data-transformation/   # Transformation module
+│   ├── pom.xml
+├── data-storage/          # Storage module
+│   ├── pom.xml
+└── data-analytics/        # Analytics module
+    ├── pom.xml
+
+
+
+6.program file creation structure:
+          
+          data-engineering-parent
+│
+├── data-ingestion
+│   └── src
+│       └── main
+│           └── java
+│               └── com.example.dataengineering.ingestion.DataIngestion.java
+├── data-transformation
+│   └── src
+│       └── main
+│           └── java
+│               └── com.example.dataengineering.transformation.DataTransformation.java
+├── data-storage
+│   └── src
+│       └── main
+│           └── java
+│               └── com.example.dataengineering.storage.DataStorage.java
+├── data-analytics
+│   └── src
+│       └── main
+│           └── java
+│               └── com.example.dataengineering.analytics.DataAnalytics.java
+├── pom.xml (parent POM)
+
+
+7.Program:
+        
+ 1.DataIngestion.java:
+
+package com.example.dataengineering.ingestion;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
+public class DataIngestion {
+    public List<String[]> readCSV(String filePath) {
+        List<String[]> data = new ArrayList<>();
+        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
+            String header = br.readLine();  // Skip header
+            String line;
+            while ((line = br.readLine()) != null) {
+                data.add(line.split(","));
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return data;
+    }
+}
+
+
+
+ 2.DataTransformation.java:
+
+package com.example.dataengineering.transformation;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+public class DataTransformation {
+    public List<String[]> filterByCountry(List<String[]> data, String country) {
+        return data.stream()
+                   .filter(row -> row[2].equalsIgnoreCase(country))
+                   .collect(Collectors.toList());
+    }
+}
+
+
+           
+ 3.DataStorage.java:
+
+package com.example.dataengineering.storage;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.List;
+
+public class DataStorage {
+    public void writeCSV(List<String[]> data, String outputPath) {
+        try (FileWriter writer = new FileWriter(outputPath)) {
+            for (String[] row : data) {
+                writer.append(String.join(",", row)).append("\n");
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+}
+
+
+            
+ 4.DataAnalytics.java:
+
+      package com.example.dataengineering.analytics;
+
+import java.util.List;
+
+public class DataAnalytics {
+    public double calculateAverageSalary(List<String[]> data) {
+        return data.stream()
+                   .mapToDouble(row -> Double.parseDouble(row[4]))
+                   .average()
+                   .orElse(0);
+    }
+}
+   
+
+8.Creating Main.java within C:\Users\Deepika\MavenProjects\data-engineering-parent\data-ingestion\src\main\java\com\example:
+    
+package com.example;
+
+import com.example.dataengineering.ingestion.DataIngestion;
+import com.example.dataengineering.transformation.DataTransformation;
+import com.example.dataengineering.storage.DataStorage;
+import com.example.dataengineering.analytics.DataAnalytics;
+
+import java.util.List;
+
+public class Main {
+    public static void main(String[] args) {
+        String inputFile = "data/input.csv";
+        String outputFile = "data/output.csv";
+
+        DataIngestion ingestion = new DataIngestion();
+        DataTransformation transformation = new DataTransformation();
+        DataStorage storage = new DataStorage();
+        DataAnalytics analytics = new DataAnalytics();
+
+        List<String[]> data = ingestion.readCSV(inputFile);
+        List<String[]> filteredData = transformation.filterByCountry(data, "USA");
+
+        storage.writeCSV(filteredData, outputFile);
+
+        double avgSalary = analytics.calculateAverageSalary(filteredData);
+        System.out.println("Average Salary in the USA: $" + avgSalary);
+    }
+}
+
+
+
+    
+9.Creating input.csv file within the data folder created in the data-ingestion module:
+
+         C:\Users\Deepika\MavenProjects\data-engineering-parent\data-ingestion\data
+
+    input.csv file:
+             id,name,country,age,salary
+             1,John Doe,USA,30,70000
+             2,Jane Smith,Canada,25,80000
+             3,Bob Johnson,USA,45,50000
+             4,Alice Brown,UK,28,90000
+             5,Tom White,USA,35,60000
+             6,Linda Green,Canada,40,75000
+             7,James Black,UK,38,65000
+             8,Sarah Silver,USA,29,55000
+
+10.Executing the program:
+       
+         cd data-engineering-parent
+         mvn clean install
+         cd data-ingestion 
+         mvn exec:java -Dexec.mainClass="com.example.dataengineering.DataIngestion"
